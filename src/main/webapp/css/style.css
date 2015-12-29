@@ -1,0 +1,351 @@
+ body {
+	margin: 0px;
+	padding: 0px;
+	color: #aeaeae;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 15px;
+	line-height: 1.5em; 
+	background-color: rgb(55, 173, 139);
+/*	background-image: url(../images/bg.jpg);*/
+	background-repeat: repeat-x;
+	background-position: top;
+}
+
+
+a, a:link, a:visited { 
+	color: #FAFF29; 
+	text-decoration: none; 
+}
+
+a:hover { 
+	text-decoration: underline; 
+}
+
+p { 
+	margin: 0px; 
+	padding: 0; 
+}
+
+img { 
+	border: none; 
+}
+
+h1, h2, h3, h4, h5, h6 { 
+	color: #6D1010; 
+}
+
+h1 { 
+	font-size: 40px; 
+	font-weight: normal; 
+	margin: 0 0 30px 0; 
+	padding: 5px 0; 
+}
+
+h2 { 
+	font-size: 28px; 
+	font-weight: normal; 
+	margin: 0 0 30px 0; 
+	padding: 0; /* text-shadow: 1px 1px 2px #000; */ 
+}
+
+h3 { 
+	font-size: 21px; 
+	margin: 0 0 15px 0; 
+	padding: 0; 
+	padding: 0; 
+	font-weight: normal; 
+	color: #fff; 
+}
+
+
+h4 { 
+	font-size: 18px; 
+	margin: 0 0 15px 0; 
+	padding: 0; 
+}
+
+h5 { 
+	font-size: 16px; 
+	margin: 0 0 10px 0; 
+	padding: 0; 
+	color: #D9EC45; 
+}
+
+h6 { 
+	font-size: 14px; 
+	margin: 0 0 5px 0; 
+	padding: 0; 
+	color: #ccc; 
+}
+
+th, td {
+    padding: 6px;
+    text-align: left;
+}
+em{
+	color:#fff;
+	}
+div#container{
+	width: 1050px;
+	padding: 0 10px;
+	margin: 0 auto;
+	}
+div#header{
+	width:100%;
+	height:50px;
+	padding:50px 10px 10px 10px;
+	}
+div.logo{
+	float:left;
+	width:300px;
+	color:#fff;
+	font-size:30px;
+	}
+div.logo span{
+	font-size:15px;
+	}
+div#header ul{
+	margin:20px 0 0 0;
+	padding:0;
+	float:right;
+	}
+div#header ul li{
+	display:inline-block;
+	list-style:none;
+	}
+div#menu{
+	clear: both;
+	width: 100%;
+	height: 51px;
+	padding: 0 10px;
+	/* background: url(../images/bg_menu.png) no-repeat; */
+	}
+
+#menu {
+	clear: both;
+	width: 940px;
+	height: 51px;
+	padding: 0 10px;
+	background: url(../images/bg_menu.png) no-repeat;
+}
+
+#menu ul {
+	margin: 0;
+	padding: 14px 12px 0;
+	list-style: none;
+}
+
+#menu ul li {
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+}
+
+#menu ul li a {
+	float: left;
+	display: block;
+	font-size: 13px;
+	width: 100px;
+	height: 25px;
+	padding: 5px 0 0 0;
+	color: #afdeff;	
+	text-decoration: none;
+	font-weight: bold;
+	/* text-align: center; */
+	outline: none;
+}
+
+#menu ul li a:hover, #menu ul .current {
+	color: #fff;
+	background: url(../images/menu_hover.png) no-repeat center left;
+} 
+
+
+div#slider{
+height:3px;
+	}
+div#content{
+	padding: 40px 5px;
+	width:860px;
+	height:100%;
+	/* background-image:url(../images/bg_content.png); */
+	background-repeat:repeat-y;
+	background-position:center center;
+	}
+.reasons {
+	float: left;
+	width: 240px;
+	padding-right: 40px;
+	text-align: justify;
+}
+.reasons img{
+	float: left;
+	margin-top: 3px;
+	margin-right: 10px;
+	}
+.hr_divider {
+	clear: both;
+	padding-bottom: 40px;
+	margin-bottom: 40px;
+	/* background: url(../images/hr_divider.png) bottom repeat-x;	 */
+}
+.main_col1 {
+	float: left;
+	width: 520px;
+	padding-right: 40px;
+}
+.image_fl {
+	float: none;
+	margin: 3px 15px 0 0;
+}
+.image_wrapper {
+	display: inline-block;
+	border: 1px solid #000;
+	background: #343239;
+	padding: 8px;
+	margin-bottom: 10px;
+}
+.main_col2 {
+	float: left;
+	width: 240px;
+	padding-right: 40px;
+}
+blockquote {
+font-style: italic;
+margin: 0 0 0 10px;
+}
+.btn_more a {
+	float: right;
+	display: block;
+	width: 100px;
+	height: 26px;
+	margin-top: 10px;
+	padding-top: 4px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #a9a9a9;
+	text-align: center;
+	/* background: url(../images/btn.png) no-repeat; */
+}
+
+.btn_more a:hover {
+	/* text-shadow: 1px 1px 1px #000; */
+	text-decoration: none;
+	/* background: url(../images/btn_hover.png) no-repeat; */
+}
+#footer {
+	width: 940px;
+	padding: 10px;
+	text-align: center;
+	color: #755e96;
+}
+
+#footer a {
+	color: #755e96;
+}
+/* SERVICES PAGE */
+.col_w420 {
+	float: left;
+	width: 380px;
+	padding-right: 40px;
+}
+.col_w840 {
+	float: left;
+	border: 1px solid #000;
+	width: 720px;
+	padding-right: 40px;
+}
+.tmo_list { margin: 20px 0 20px 20px; padding: 0; list-style: none; }
+.tmo_list li { background: transparent url(../images/list.png) no-repeat scroll 0 0px; margin:0 0 20px; padding: 0 0 0 20px; 	line-height: 1em; }
+.tmo_list li a { color: #fff; }
+.tmo_list li a:hover { color: #ff4301; }
+/* Partners PAGE */
+.col_w560 {
+	color: #1F2120;
+	float: left;
+	width: 360px;
+	padding-right: 40px;
+}
+.col_w150 {
+	/* border: 1px solid #000; */ 
+	float: left;
+	width: 130px;
+	padding-right: 40px;
+}
+.col_w140 {
+	border: 1px solid #000; 
+	float: left;
+	width: 140px;
+	padding-right: 40px;
+}
+.col_w100 {
+	border: 1px solid #000;
+	float: left;
+	width: 100px;
+	padding-right: 40px;
+}
+
+
+.col_w200 {
+	/* border: 1px solid #000; */
+	float: left;
+	width: 260px;
+	
+}
+.col_w280 {
+	/* border: 1px solid #000; */
+	float: left;
+	width: 280px;
+	
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+
+.col_w300 {
+	
+	float: left;
+	width: 450px;
+	
+}
+#partner_box {
+	width: 520px;
+	overflow: hidden;
+}
+
+#partner_box ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#partner_box ul li {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+}
+#partner_box ul li a {
+	float: left;
+	display: block;
+	margin: 0 40px 20px 0;
+}
+
+
+
+#partner_box ul li .flashmo { background: url(../images/flashmo.png) no-repeat; width: 150px; height: 40px; }
+#partner_box ul li .flashmo:hover { background: url(../images/flashmo_hover.png) no-repeat; }
+
+#partner_box ul li .templatemo { background: url(../images/templatemo.png) no-repeat; width: 226px; height: 40px; }
+#partner_box ul li .templatemo:hover { background: url(../images/templatemo_hover.png) no-repeat; }
+
+#partner_box ul li .koflash { background: url(../images/koflash.png) no-repeat; width: 148px; height: 40px; }
+#partner_box ul li .koflash:hover { background: url(../images/koflash_hover.png) no-repeat; }
+
+#partner_box ul li .wdmo { background: url(../images/webdesignmo.png) no-repeat; width: 261px; height: 40px; }
+#partner_box ul li .wdmo:hover { background: url(../images/webdesignmo_hover.png) no-repeat; }
+
+#partner_box ul li .layermo { background: url(../images/layermo.png) no-repeat; width: 156px; height: 40px; }
+#partner_box ul li .layermo:hover { background: url(../images/layermo_hover.png) no-repeat; }
