@@ -34,7 +34,7 @@
 			<div>
 				<form action="showTree" method="get">
 
-				<input type="submit" value="Show Category Tree">
+				<input type="submit" value="Admin Page">
 
 				</form>
 			</div>

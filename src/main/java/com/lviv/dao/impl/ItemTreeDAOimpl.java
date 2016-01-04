@@ -1,10 +1,10 @@
 package com.lviv.dao.impl;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,48 +23,76 @@ public class ItemTreeDAOimpl implements ItemTreeDAO {
 
 	@Override
 	public void save(ItemTree itemTree) {
-
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.save(itemTree);
-		tx.commit();
-		session.close();
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.save(itemTree);
+			tx.commit();
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 
 	}
 
 	@Override
 	public List<ItemTree> getAll() {
-		List<ItemTree> children = null;
+		Session session = null;
+		try {
+			List<ItemTree> itemTreeList = null;
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			itemTreeList = session.createCriteria(ItemTree.class).list();
+			return itemTreeList;
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 
-		List<ItemTree> itemTreeList = null;
-
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		itemTreeList = session.createCriteria(ItemTree.class).list();		
-		session.close();
-		return itemTreeList;
 	}
 
 	@Override
 	public ItemTree getById(Integer id) {
-		System.out.println("ItemTree getById id="+id);
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		ItemTree itemTree = (ItemTree) session.get(ItemTree.class, id);
-		if(itemTree!=null){
-			fillChildren(itemTree);
-			fillParentParams(itemTree);				
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			ItemTree itemTree = (ItemTree) session.get(ItemTree.class, id);
+			if (itemTree != null) {
+				fillChildren(itemTree);
+				fillParentParams(itemTree);
+			}
+			return itemTree;
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-		session.close();
-		return itemTree;
 	}
 
 	public ItemTree getByIdSingleObject(Integer id) {
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		ItemTree itemTree = (ItemTree) session.get(ItemTree.class, id);
-		session.close();
-		return itemTree;
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			session.beginTransaction();
+			ItemTree itemTree = (ItemTree) session.get(ItemTree.class, id);
+			return itemTree;
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 
 	private ItemTree fillParentParams(ItemTree itemTree) {
@@ -81,27 +109,42 @@ public class ItemTreeDAOimpl implements ItemTreeDAO {
 	private TreeSet<ItemTree> getChildren(ItemTree itemTree) {
 
 		TreeSet<ItemTree> children = null;
-		List list = null;
+		List<ItemTree> list = null;
 		int id = itemTree.getIdItemTree();
 
-		Session session = sessionFactory.openSession();
-		String hql = "FROM ItemTree I WHERE I.parentId = :id_ItemTree";
-		Query query = session.createQuery(hql);
-		query.setParameter("id_ItemTree", id);
-		list = query.list();
-		children = new TreeSet<ItemTree>(list);
-		session.close();
-
-		return children;
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			String hql = "FROM ItemTree I WHERE I.parentId = :id_ItemTree";
+			Query query = session.createQuery(hql);
+			query.setParameter("id_ItemTree", id);
+			list = query.list();
+			children = new TreeSet<ItemTree>(list);
+			return children;
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 
 	@Override
 	public void update(ItemTree itemTree) {
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.update(itemTree);
-		tx.commit();
-		session.close();
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.update(itemTree);
+			tx.commit();
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 
 	}
 
@@ -138,46 +181,60 @@ public class ItemTreeDAOimpl implements ItemTreeDAO {
 			}
 		}
 
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
 
-		session.delete(itemTree);
+			session.delete(itemTree);
 
-		tx.commit();
-		session.close();
-
-		return itemTree;
+			tx.commit();
+			return itemTree;
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 	}
-	
+
 	@Override
 	public Integer getRootId() {
 		List<ItemTree> list = null;
 		ItemTree itemTree = null;
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		String hql = "FROM ItemTree I WHERE I.parentId = :id_ItemTree";
-		Query query = session.createQuery(hql);
-		query.setParameter("id_ItemTree", 0);// parentId = 0 mean that it is the root
-		list = query.list();
-		
-		if(list.isEmpty()){
-			itemTree = new ItemTree("Products",0);
-			session.save(itemTree);
-			tx.commit();
-			query = session.createQuery(hql);
-			query.setParameter("id_ItemTree", 0);
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			String hql = "FROM ItemTree I WHERE I.parentId = :id_ItemTree";
+			Query query = session.createQuery(hql);
+			query.setParameter("id_ItemTree", 0);// parentId = 0 mean that it is
+													// the
+													// root
 			list = query.list();
-			itemTree=list.get(0);
-			
-		}else
-		{
-			itemTree=list.get(0);
+
+			if (list.isEmpty()) {
+				itemTree = new ItemTree("Products", 0);
+				session.save(itemTree);
+				tx.commit();
+				query = session.createQuery(hql);
+				query.setParameter("id_ItemTree", 0);
+				list = query.list();
+				itemTree = list.get(0);
+
+			} else {
+				itemTree = list.get(0);
+			}
+			return itemTree.getIdItemTree();
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
 		}
-		session.close();
-		return itemTree.getIdItemTree();
 
 	}
-	
-	
 
 }

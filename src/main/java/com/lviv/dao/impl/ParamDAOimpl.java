@@ -2,6 +2,7 @@ package com.lviv.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -60,11 +61,19 @@ public class ParamDAOimpl implements ParamDAO {
 
 	@Override
 	public void delete(Param param) {
-		Session session = sessionFactory.openSession();
+		Session session = null;
+		try {
+		session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		session.delete(param);
 		tx.commit();
-		session.close();
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 		
 	}
 

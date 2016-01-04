@@ -264,7 +264,7 @@ margin: 0 0 0 10px;
 	color: #1F2120;
 	float: left;
 	width: 360px;
-	padding-right: 40px;
+	padding-right: 0px;
 }
 .col_w150 {
 	/* border: 1px solid #000; */ 
@@ -289,7 +289,7 @@ margin: 0 0 0 10px;
 .col_w200 {
 	/* border: 1px solid #000; */
 	float: left;
-	width: 260px;
+	width: 300px;
 	
 }
 .col_w280 {
@@ -308,7 +308,7 @@ table, th, td {
 .col_w300 {
 	
 	float: left;
-	width: 450px;
+	width: 500px;
 	
 }
 #partner_box {

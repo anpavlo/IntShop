@@ -210,9 +210,24 @@ function ItemTreeSelect(idItemTree) {
 		 }else {
 			 	 
 			 params="<table style=\"width:100%;\"> <caption style=\"text-align: left;\">Oun params</caption>";	 
-			 params=params+"<tr id=\"edit"+data.params[0].idParam+"\">  <td><h3>"+data.params[0].paramName+"</h3><button>up</button>  <button>down</button> </td>  <td><button type=\"button\" onclick=\"addEditforParam("+data.params[0].idParam+",'"+data.params[0].paramName+"')\">edit</button> </td>       <td> <button type=\"button\" onclick=\"deleteParam("+data.params[0].idParam+")\">delete</button> </td>  </tr>";
+			 params=params+"<tr id=\"edit"+data.params[0].idParam+"\">  <td><h3>"+data.params[0].paramName+"</h3> </td>  <td><button type=\"button\" onclick=\"addEditforParam("+data.params[0].idParam+",'"+data.params[0].paramName+"')\">edit</button> </td>       <td> <button type=\"button\" onclick=\"deleteParam("+data.params[0].idParam+")\">delete</button> </td>"+
+			 "<td>"+
+			 "<form><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"+
+			 "<tr><td rowspan=\"2\"><input type=\"text\" name=\"number\" value=\""+data.params[0].priority+"\" style=\"width:50px;height:23px;font-weight:bold;\" /></td>"+
+			 "<td><input type=\"button\" value=\" UP \" onclick=\"{this.form.number.value++;upclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:13px;\" ></td></tr>"+
+			 "<tr><td><input type=button value=\" DOWN \" onclick=\"{this.form.number.value--;downclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:12px;\" ></td>"+
+			 "</tr></table></form>"+
+			 "</td></tr>";
 				 for (i=1; i<data.params.length;i++){
-					 params=params+"<tr id=\"edit"+data.params[i].idParam+"\"><td><h3>"+data.params[i].paramName+"</h3><button>up</button>  <button>down</button> </td><td> <button type=\"button\" onclick=\"addEditforParam("+data.params[i].idParam+",'"+data.params[i].paramName+"')\">edit</button> </td><td>  <button type=\"button\" onclick=\"deleteParam("+data.params[i].idParam+")\">delete</button> </td></tr>";
+					 params=params+"<tr id=\"edit"+data.params[i].idParam+"\"><td><h3>"+data.params[i].paramName+"</h3>"+
+					 "</td><td> <button type=\"button\" onclick=\"addEditforParam("+data.params[i].idParam+",'"+data.params[i].paramName+"')\">edit</button> </td><td>  <button type=\"button\" onclick=\"deleteParam("+data.params[i].idParam+")\">delete</button> </td>"+
+					 "<td>"+
+					 "<form><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"+
+					 "<tr><td rowspan=\"2\"><input type=\"text\" name=\"number\" value=\""+data.params[i].priority+"\" style=\"width:50px;height:23px;font-weight:bold;\" /></td>"+
+					 "<td><input type=\"button\" value=\" UP \" onclick=\"{this.form.number.value++;upclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:13px;\" ></td></tr>"+
+					 "<tr><td><input type=button value=\" DOWN \" onclick=\"{this.form.number.value--; downclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:12px;\" ></td>"+
+					 "</tr></table></form>"+
+					 "</td></tr>";
 				 }
 			 }
 		 params=params+"</table>";
@@ -224,9 +239,9 @@ function ItemTreeSelect(idItemTree) {
 			 parentParams="<h3>No inherited params</h3>";
 		 }else {
 			 	 parentParams="<table style=\"width:100%;\"><caption style=\"text-align: left;\">Inherited params</caption>";
-			 	 parentParams=parentParams+"<tr><td><h3>"+data.parentParams[0].paramName+"</h3></td></tr>";
+			 	 parentParams=parentParams+"<tr><td><h3>"+data.parentParams[0].paramName+"</h3></td> <td> <input type = \"text\" value = \""+data.parentParams[0].priority+"\" style=\"width:40px;height:20px;font-weight:bold;\" readonly/>   </td></tr>";
 				 for (i=1; i<data.parentParams.length;i++){
-					 parentParams=parentParams+"<tr><td><h3>"+data.parentParams[i].paramName+"</h3></td></tr>";
+					 parentParams=parentParams+"<tr><td><h3>"+data.parentParams[i].paramName+"</h3></td> <td> <input type = \"text\" value = \""+data.parentParams[i].priority+"\" style=\"width:40px;height:20px;font-weight:bold;\" readonly/>   </td></tr>";
 				 }
 			 }
 		 parentParams=parentParams+"</table>";
@@ -246,6 +261,14 @@ function ItemTreeSelect(idItemTree) {
 	   
 	  }
 	 });
+	}
+	
+	function downclick(priority){
+		console.log("downclick  "+priority);
+	}
+	
+	function upclick(priority){
+		console.log("upclick  "+priority);
 	}
 	
 	function add(idItemTree){
@@ -327,6 +350,9 @@ function ItemTreeSelect(idItemTree) {
 			   id: idParam
 			  }),
 			  success: function (data) {
+				  if(data.status == false){
+					  alert(data.msg)
+				  }
 				  ItemTreeSelect(idItemTree); 
 			  }
 		 });
@@ -474,16 +500,13 @@ function ItemTreeSelect(idItemTree) {
 
 		<div id="content">
 			<div class="col_w560">
-				
-				<h6>To add Article choose category without children and then
-					press the button</h6>
-				<br />
-				<br />
-				<br />
+
 
 				<h2>Category Tree</h2>
-				<br><h2>${message}</h2>
-
+				<br/>
+				<h6>To add Article choose category without children and then
+					press the button</h6>
+					
 
 				<div class="css-treeview">
 					<ul>

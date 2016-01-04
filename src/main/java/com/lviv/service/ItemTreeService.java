@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.lviv.dao.inter.ItemTreeDAO;
 import com.lviv.model.ItemTree;
+import com.lviv.model.Param;
 
 @Service
 public class ItemTreeService {
@@ -49,6 +50,7 @@ public class ItemTreeService {
 		return itemTreeList;
 	}
 	
+	// returns all children if ItemTree in one List
 	public List<ItemTree> getAllChildrenCategoriesByParentsId(Integer id){
 		ItemTree itemTree = itemTreeDAO.getById(id);
 		return getAllChildrenCategoriesByParentsId1(itemTree);
@@ -69,6 +71,30 @@ public class ItemTreeService {
 		return itemTreeList;
 	}
 	
+	private List<ItemTree> getAllChildrenCategoriesByParentsId2(ItemTree itemTree){
+		List<ItemTree> itemTreeList = new ArrayList<ItemTree>();
+		TreeSet<ItemTree> children = itemTree.getChildrenList();
+		
+		if (children!=null) {
+			for (ItemTree child : children) {
+				itemTreeList.add(child);
+				itemTreeList.addAll(getAllChildrenCategoriesByParentsId2(child));
+				
+			}
+		}
+		
+		return itemTreeList;
+	}
+	
+	public List<Param> getAllParamsOfChildren(ItemTree itemTree) {
+		List<Param> paramList = new ArrayList<Param>();
+		List<ItemTree> itemTreeList =  getAllChildrenCategoriesByParentsId2(itemTree);
+		for(ItemTree itemTree1 : itemTreeList){
+			paramList.addAll(itemTree1.getParams());
+		}
+		return paramList;
+	}
+	
 	public void deleteItem(ItemTree itemTree){
 		itemTreeDAO.delete(itemTree);
 	}
@@ -79,6 +105,8 @@ public class ItemTreeService {
 	public Integer getRootId(){
 		return itemTreeDAO.getRootId();
 	}
+
+	
 	
 
 }
