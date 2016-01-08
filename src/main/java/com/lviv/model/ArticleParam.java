@@ -82,13 +82,17 @@ public class ArticleParam implements Serializable, Comparable<ArticleParam> {
 	@Override
 	public int compareTo(ArticleParam o) {
 
-		if ((this.param != null)&&(o.param!=null)) {
-			if (this.param.getPriority() < o.param.getPriority()) {
-				return -1;
+		try {
+			if ((this.param != null) && (o.param != null)) {
+				if (this.param.getPriority() < o.param.getPriority()) {
+					return -1;
+				}
+				if (this.param.getPriority() > o.param.getPriority()) {
+					return 1;
+				}
 			}
-			if (this.param.getPriority() > o.param.getPriority()) {
-				return 1;
-			}
+		} catch (Exception e) {
+
 		}
 		return 0;
 	}

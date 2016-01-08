@@ -30,5 +30,9 @@ public class ParamService {
 	public Param getByValue(String value){
 		return paramDAO.getByValue(value);
 	}
+	
+	public Param getByPriorityAndIdItemTree(Integer priority, Integer IdItemTree) {
+		return paramDAO.getByPriorityAndIdItemTree(priority, IdItemTree);
+	}
 
 }

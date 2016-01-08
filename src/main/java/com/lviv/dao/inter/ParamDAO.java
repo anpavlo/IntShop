@@ -11,5 +11,6 @@ public interface ParamDAO {
 	public void update(Param param);
 	public void delete(Param param);
 	public Param getByValue(String value);
+	public Param getByPriorityAndIdItemTree(Integer priority, Integer IdItemTree);
 	
 }

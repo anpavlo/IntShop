@@ -214,8 +214,8 @@ function ItemTreeSelect(idItemTree) {
 			 "<td>"+
 			 "<form><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"+
 			 "<tr><td rowspan=\"2\"><input type=\"text\" name=\"number\" value=\""+data.params[0].priority+"\" style=\"width:50px;height:23px;font-weight:bold;\" /></td>"+
-			 "<td><input type=\"button\" value=\" UP \" onclick=\"{this.form.number.value++;upclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:13px;\" ></td></tr>"+
-			 "<tr><td><input type=button value=\" DOWN \" onclick=\"{this.form.number.value--;downclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:12px;\" ></td>"+
+			 "<td><input type=\"button\" value=\" UP \" onclick=\"{this.form.number.value--;upOrdownclick(this.form.number.value,"+data.params[0].idParam+")}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:13px;\" ></td></tr>"+
+			 "<tr><td><input type=button value=\" DOWN \" onclick=\"{this.form.number.value++;upOrdownclick(this.form.number.value,"+data.params[0].idParam+")}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:12px;\" ></td>"+
 			 "</tr></table></form>"+
 			 "</td></tr>";
 				 for (i=1; i<data.params.length;i++){
@@ -224,8 +224,8 @@ function ItemTreeSelect(idItemTree) {
 					 "<td>"+
 					 "<form><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">"+
 					 "<tr><td rowspan=\"2\"><input type=\"text\" name=\"number\" value=\""+data.params[i].priority+"\" style=\"width:50px;height:23px;font-weight:bold;\" /></td>"+
-					 "<td><input type=\"button\" value=\" UP \" onclick=\"{this.form.number.value++;upclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:13px;\" ></td></tr>"+
-					 "<tr><td><input type=button value=\" DOWN \" onclick=\"{this.form.number.value--; downclick(this.form.number.value)}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:12px;\" ></td>"+
+					 "<td><input type=\"button\" value=\" UP \" onclick=\"{this.form.number.value--;upOrdownclick(this.form.number.value,"+data.params[i].idParam+")}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:13px;\" ></td></tr>"+
+					 "<tr><td><input type=button value=\" DOWN \" onclick=\"{this.form.number.value++; upOrdownclick(this.form.number.value,"+data.params[i].idParam+")}\" style=\"font-size:7px;margin:0;padding:0;width:20px;height:12px;\" ></td>"+
 					 "</tr></table></form>"+
 					 "</td></tr>";
 				 }
@@ -263,13 +263,45 @@ function ItemTreeSelect(idItemTree) {
 	 });
 	}
 	
-	function downclick(priority){
-		console.log("downclick  "+priority);
+	function upOrdownclick(priority,idParam){
+		console.log("upOrdownclick  "+priority);
+		
+		$.ajax({
+			  url : "editParamPriority",
+			  type: 'GET',
+			  dataType: 'json',
+			  contentType: 'application/json',
+			     mimeType: 'application/json',
+			  data : ({
+			   id: idParam,
+			   newPriority: priority
+			  }),
+			  success: function (data) {
+				  ItemTreeSelect(idItemTree); 
+			  }
+		 });
+		
 	}
 	
-	function upclick(priority){
+/* 	function upclick(priority,idParam){
 		console.log("upclick  "+priority);
-	}
+		
+		$.ajax({
+			  url : "editParamPriority",
+			  type: 'GET',
+			  dataType: 'json',
+			  contentType: 'application/json',
+			     mimeType: 'application/json',
+			  data : ({
+			   id: idParam,
+			   newPriority: priority,
+			   upOrDown: "up"
+			  }),
+			  success: function (data) {
+				  ItemTreeSelect(idItemTree); 
+			  }
+		 });
+	} */
 	
 	function add(idItemTree){
 		var inp ="<form action=\"addItemTree\" method=\"get\"> New category name:<br>  <input type=\"text\" name=\"newItemTreeName\" size=\"35\">  <input type=\"hidden\" name=\"parentIdItemTree\" value=\""+idItemTree+"\"> <input type=\"submit\" value=\"Add\"></form><br>";

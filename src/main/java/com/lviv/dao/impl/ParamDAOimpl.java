@@ -15,7 +15,7 @@ import com.lviv.model.Param;
 
 @Repository
 public class ParamDAOimpl implements ParamDAO {
-	
+
 	@Autowired
 	SessionFactory sessionFactory;
 
@@ -56,17 +56,17 @@ public class ParamDAOimpl implements ParamDAO {
 		session.update(param);
 		tx.commit();
 		session.close();
-		
+
 	}
 
 	@Override
 	public void delete(Param param) {
 		Session session = null;
 		try {
-		session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.delete(param);
-		tx.commit();
+			session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(param);
+			tx.commit();
 		} catch (HibernateException e) {
 			throw (e);
 		} finally {
@@ -74,24 +74,57 @@ public class ParamDAOimpl implements ParamDAO {
 				session.close();
 			}
 		}
-		
+
 	}
 
 	@Override
 	public Param getByValue(String value) {
-		
-		
-		Session session = sessionFactory.openSession();
-		String hql = "FROM Param P WHERE P.paramName = :param_Name";
-		Query query = session.createQuery(hql);
-		query.setParameter("param_Name", value);
-		List params = query.list();
-		session.close();
-		Param param = (Param) params.get(0);
+		Session session = null;
+		Param param = null;
+		try {
 
-		return param;
+			session = sessionFactory.openSession();
+			String hql = "FROM Param P WHERE P.paramName = :param_Name";
+			Query query = session.createQuery(hql);
+			query.setParameter("param_Name", value);
+			List<Param> params = query.list();
+			if (!params.isEmpty()) {
+				param = (Param) params.get(0);
+			}
+			return param;
+
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 	}
-	
-	
+
+	@Override
+	public Param getByPriorityAndIdItemTree(Integer priority, Integer IdItemTree) {
+		Param param = null;
+		Session session = null;
+		try {
+			session = sessionFactory.openSession();
+			String hql = "FROM Param P WHERE P.itemTree.idItemTree  = :id_ItemTree and P.priority = :prior";
+			Query query = session.createQuery(hql);
+			query.setParameter("id_ItemTree", IdItemTree);
+			query.setParameter("prior", priority);
+			List<Param> params = query.list();
+			if (!params.isEmpty()) {
+				param = (Param) params.get(0);
+			}
+			return param;
+
+		} catch (HibernateException e) {
+			throw (e);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+	}
 
 }

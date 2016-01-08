@@ -33,7 +33,7 @@ public class TreeController {
 	ParamService paramService;
 
 	List<ItemTree> itemTrees = new LinkedList<ItemTree>();
-	//List<Param> params;
+	// List<Param> params;
 
 	@RequestMapping(value = "/addArticlePage", method = RequestMethod.GET)
 	public ModelAndView addArticlePage() {
@@ -142,22 +142,22 @@ public class TreeController {
 
 		if (!itemTree1.getParams().isEmpty()) {
 			maxPriority = Collections.max(itemTree1.getParams()).getPriority();
-			/*for (Param param1 : itemTree1.getParams()) {
-				if (param1.getPriority() > maxPriority) {
-					maxPriority = param1.getPriority();
-				}
-			}*/
+			/*
+			 * for (Param param1 : itemTree1.getParams()) { if
+			 * (param1.getPriority() > maxPriority) { maxPriority =
+			 * param1.getPriority(); } }
+			 */
 		} else {
 			if (!itemTree1.getParentParams().isEmpty()) {
 				maxPriority = Collections.max(itemTree1.getParentParams()).getPriority();
-				/*for (Param param1 : itemTree1.getParentParams()) {
-					if (param1.getPriority() > maxPriority) {
-						maxPriority = param1.getPriority();
-					}
-				}*/
+				/*
+				 * for (Param param1 : itemTree1.getParentParams()) { if
+				 * (param1.getPriority() > maxPriority) { maxPriority =
+				 * param1.getPriority(); } }
+				 */
 			}
 		}
-		if (itemTree1.getChildrenList()!=null) {
+		if (itemTree1.getChildrenList() != null) {
 			List<Param> paramList = itemTreeService.getAllParamsOfChildren(itemTree1);
 			for (Param param1 : paramList) {
 				param1.setPriority(param1.getPriority() + 1);
@@ -183,6 +183,31 @@ public class TreeController {
 		return true;
 	}
 
+	@RequestMapping(value = "/editParamPriority", method = RequestMethod.GET)
+	public @ResponseBody Boolean editParamPriorityAjax(@RequestParam("id") Integer idParam,
+			@RequestParam("newPriority") Integer newPriority) {
+
+		System.out.print("editParamPriorityAjax  ");
+		System.out.println("idParam=" + idParam + " newPriority=" + newPriority);
+
+		Param param = paramService.getById(idParam);
+		Param param1 = paramService.getByPriorityAndIdItemTree(newPriority, param.getItemTree().getIdItemTree());
+		if (param1 != null) {
+
+
+				System.out.println("param wich need change: " + param1);
+				System.out.println("called param:  " + param);
+				
+				param1.setPriority(param.getPriority());
+				param.setPriority(newPriority);
+				paramService.updateParam(param1);
+				paramService.updateParam(param);
+
+		}else return false;
+
+		return true;
+	}
+
 	@RequestMapping(value = "/deleteParam", method = RequestMethod.GET)
 	public @ResponseBody JasonResp deleteParamAjax(@RequestParam("id") Integer idParam) {
 
@@ -193,7 +218,6 @@ public class TreeController {
 
 		try {
 			Param param = paramService.getById(idParam);
-
 			paramService.deleteParam(param);
 
 			ItemTree itemTree1 = itemTreeService.getById(param.getItemTree().getIdItemTree());
@@ -203,11 +227,12 @@ public class TreeController {
 				for (Param param1 : itemTree1.getParams()) {
 					if (param1.getPriority() > param.getPriority()) {
 						param1.setPriority(param1.getPriority() - 1);
+						paramService.updateParam(param1);
 					}
 				}
 			}
 
-			if (!itemTree1.getChildrenList().isEmpty()) {
+			if (itemTree1.getChildrenList() != null) {
 				List<Param> paramList = itemTreeService.getAllParamsOfChildren(itemTree1);
 				for (Param param1 : paramList) {
 					param1.setPriority(param1.getPriority() - 1);
@@ -215,11 +240,11 @@ public class TreeController {
 				}
 			}
 		} catch (Exception e) {
-			
-			return new JasonResp("Unable delete param, it is already used.",false);
+
+			return new JasonResp("Unable delete param, it is already used.", false);
 		}
 
-		return  new JasonResp("ok",true);
+		return new JasonResp("ok", true);
 	}
 
 }

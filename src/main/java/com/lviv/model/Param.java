@@ -18,36 +18,34 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="Param")
-public class Param implements Serializable, Comparable<Param>{
-	
+@Table(name = "Param")
+public class Param implements Serializable, Comparable<Param> {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3176605026688479434L;
 
 	@Id
-	@Column(name="idParam")
+	@Column(name = "idParam")
 	@GeneratedValue
 	private Integer idParam;
-	
-	@Column(name="paramName")
+
+	@Column(name = "paramName")
 	private String paramName;
-	
+
 	@ManyToOne
-	@JoinColumn(name="idItemTree", nullable=false)
+	@JoinColumn(name = "idItemTree", nullable = false)
 	@JsonBackReference
 	private ItemTree itemTree;
-	
-	@OneToMany(mappedBy="param", fetch=FetchType.EAGER)
+
+	@OneToMany(mappedBy = "param", fetch = FetchType.EAGER)
 	@JsonManagedReference("articleparam-param")
 	private Set<ArticleParam> articleParam;
-	
-	@Column(name="priority")
+
+	@Column(name = "priority")
 	private Integer priority;
 
-	
-	
 	public Param() {
 		super();
 	}
@@ -58,8 +56,6 @@ public class Param implements Serializable, Comparable<Param>{
 		this.paramName = paramName;
 		this.itemTree = itemTree;
 	}
-	
-	
 
 	public ItemTree getItemTree() {
 		return itemTree;
@@ -103,22 +99,24 @@ public class Param implements Serializable, Comparable<Param>{
 
 	@Override
 	public int compareTo(Param o) {
-		
-		if(o.priority!=null){
-			return this.priority - o.priority;
+
+		try {
+			if (o.priority != null) {
+				return this.priority - o.priority;
+			}
+		} catch (Exception e) {
+
 		}
-		
 		return 0;
-		
-	}
-	
-	@Override
-	public String toString(){
-		
-		return "idParam = "+idParam+";  paramName = "+paramName+"; priority = "+priority+"; itemTree_ID = "+itemTree.getIdItemTree()+"; articleParam = "+articleParam;
 
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+
+		return "idParam = " + idParam + ";  paramName = " + paramName + "; priority = " + priority + "; itemTree_ID = "
+				+ itemTree.getIdItemTree() + "; articleParam = " + articleParam;
+
+	}
+
 }
