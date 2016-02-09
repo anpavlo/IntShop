@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lviv.model.Article;
 import com.lviv.model.ItemTree;
 import com.lviv.model.Param;
 import com.lviv.service.ArticleService;
@@ -73,9 +74,17 @@ public class TreeController {
 	public ModelAndView deleteItemTree(@RequestParam("deleteIdItemTree") Integer deleteIdItemTree) {
 		System.out.print("deleteItemTree  ");
 		System.out.println("IdItemTree= " + deleteIdItemTree);
-
+		
+		try{
 		ItemTree itemTree1 = itemTreeService.getById(deleteIdItemTree);
 		itemTreeService.deleteItem(itemTree1);
+		}catch(Exception e){
+			e.printStackTrace();
+			ModelAndView mv = new ModelAndView("exeption");
+			mv.addObject("message1", "Unable to delete category");
+			mv.addObject("message2", e.getMessage());
+			return mv;
+		}
 
 		ModelAndView mv = new ModelAndView("tree");
 		ItemTree itemTree = itemTreeService.getById(itemTreeService.getRootId());
@@ -246,5 +255,7 @@ public class TreeController {
 
 		return new JasonResp("ok", true);
 	}
+	
+	
 
 }

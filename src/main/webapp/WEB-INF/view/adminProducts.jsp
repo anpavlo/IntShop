@@ -14,90 +14,106 @@
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <script type="text/JavaScript"
- src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js">
+	src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js">
+	
 </script>
 <script type="text/JavaScript"
- src="${pageContext.request.contextPath}/resources/js/Dropdown.src.js">
+	src="${pageContext.request.contextPath}/resources/js/Dropdown.src.js">
+	
+</script>
+
+<script type="text/javascript">
+function deleteArticle(articleID){
+	alert("Delete "+articleID);
+}
+
 </script>
 
 </head>
 
 
 <body>
+<script type="text/javascript"></script>
 
 	<div id="container">
 		<div id="header">
 			<div class="logo">
-				<strong>Hello</strong><br> <span>This is test internet
-					store</span>
+				<strong>Hello</strong><br>
+				<span>This is test internet store</span>
 			</div>
-			<div>
+			<!-- <div>
 				<form action="showTree" method="get">
 
-				<input type="submit" value="Admin Page">
-
+					<input type="submit" value="Admin Page">
 				</form>
-			</div>
+			</div> -->
 		</div>
 		<div id="menu">
 			<ul>
-				<li><a href="main.html" >Main</a></li>
-				<c:url var="productsListUrl"
-						value="/productslist?id=${itemTree.idItemTree}" />
+				<li><a href="showTree" >Category Tree</a></li>
+				
+				<c:url var="productsListUrl"	value="/adminProductslist?id=${itemTree.idItemTree}" />
 				<li>
 					<ul class="dropdown">
 						<li>	<a id="input_str" href="${productsListUrl}">${itemTree.value} </a>
-						 <myTags:pr_tree list="${itemTree.childrenList}" /></li>
+						 <myTags:adminPr_tree list="${itemTree.childrenList}" /></li>
 					</ul>
 				</li>
-				<li><a href="partners.html">Partners</a></li>
-				<li><a href="about.html">About us</a></li>
-				<li><a href="contact.html">Contact</a></li>
+				<li><a href="#">Users</a></li>
+				<li><a href="${pageContext.request.contextPath}/html/database.html">database</a></li>
+				<li><a href="#">*******</a></li>
 			</ul>
 		</div>
 		<div id="slider"></div>
-		
-		
+
+
 		<div id="content">
 			<div class="col_w560">
 
-				<h2>Products</h2>
-
+				<h2>Products</h2><br>
+					
 				<c:forEach items="${listArticle}" var="article">
 					<c:url var="artiklePageUrl"
-						value="/articlepage?id=${article.idArticle}" />
+						value="/adminArticlepage?id=${article.idArticle}" />
 
 
+					
+					
+					
+					<div class="image_wrapper image_fl">
+						<img width="100" height="100"
+							src="${pageContext.request.contextPath}/photos/${article.idArticle}.jpg" />
+					</div>
 					<a href="${artiklePageUrl}">
-						<div class="image_wrapper image_fl">
-							<img width="100" height="100" src="${pageContext.request.contextPath}/photos/${article.idArticle}.jpg"/>						
-						</div>
-							
-							<c:forEach items="${article.articleParam}" var="articleParams" >
-						 <div>
-						 <div class="col_w140"><c:out value="${articleParams.param.paramName}"/></div> 
-						 
-						 <div class="col_w100"><c:out value= "${articleParams.paramValue.paramValue}" /></div> 
-						 </div>
-						 
-						 <br> </c:forEach>
-							<c:out value="Description: ${article.articleDescription}" /><br>
-							 <c:out	value="Price: ${article.articlePrice}" /><br>
-							 
-						
+						 <c:forEach
+							items="${article.articleParam}" var="articleParams">
+							<div>
+								<div class="col_w140">
+									<c:out value="${articleParams.param.paramName}" />
+								</div>
 
+								<div class="col_w100">
+									<c:out value="${articleParams.paramValue.paramValue}" />
+								</div>
+							</div>
+
+							<br>
+						</c:forEach> 
+					<c:out value="Description: ${article.articleDescription}" /><br>
+					<c:out value="Price: ${article.articlePrice}" /><br>
 					</a>
+					<br><button onclick = "deleteArticle(${article.idArticle})">Delete</button>
 					<div class="hr_divider"></div>
-
+					
 				</c:forEach>
 
-				
 
 
-				
+
+
 				<div class="hr_divider"></div>
 
-				
+
 
 			</div>
 

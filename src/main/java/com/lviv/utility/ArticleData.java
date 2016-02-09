@@ -3,6 +3,9 @@ package com.lviv.utility;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lviv.model.ItemTree;
 
 public class ArticleData implements Serializable{
@@ -19,16 +22,16 @@ public class ArticleData implements Serializable{
 	public ArticleData() {
 		super();
 	}
-	
 
-	public ArticleData(Double price, Integer quantity, String description, List<ParamsData> paramsDataList) {
+	public ArticleData(Double price, Integer quantity, String description, List<ParamsData> paramsDataList,
+			ItemTree itemTree) {
 		super();
 		this.price = price;
 		this.quantity = quantity;
 		this.description = description;
 		ParamsDataList = paramsDataList;
+		this.itemTree = itemTree;
 	}
-
 
 	public Double getPrice() {
 		return price;
@@ -64,9 +67,6 @@ public class ArticleData implements Serializable{
 	public void setItemTree(ItemTree itemTree) {
 		this.itemTree = itemTree;
 	}
-	
-	
-	
-	
+
 
 }

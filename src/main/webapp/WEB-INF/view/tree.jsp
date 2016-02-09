@@ -7,6 +7,8 @@
 <head>
 <link href="${pageContext.request.contextPath}/css/style.css"
 	rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/Dropdown.css"
+	rel="stylesheet" type="text/css">
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Admin Page</title>
@@ -14,6 +16,12 @@
 <meta name="description" content="" />
 <script type="text/JavaScript"
  src="${pageContext.request.contextPath}/resources/js/jquery-1.9.1.min.js">
+</script>
+<script type="text/JavaScript"
+ src="${pageContext.request.contextPath}/resources/js/Dropdown.src.js">
+</script>
+<script type="text/JavaScript"
+ src="${pageContext.request.contextPath}/resources/js/ArticleUtil.js">
 </script>
 <style>
 		/*
@@ -159,6 +167,7 @@ function onload(){
 		location.assign("${pageContext.request.contextPath}/showTree?");
 	} */
 	var htm;
+	
 	htm="<div id=\"categoty\"></div>"+
 	"<div id=\"addParamButton\" class=\"col_w300\"></div>"+
 	"<div class=\"col_w200\" style=\"overflow: auto\">"+
@@ -168,6 +177,7 @@ function onload(){
 		"<div id=\"parentParams\" style=\"width: 127%\"></div>"+
 	"</div> <div id=\"addarticle\"></div>";
 	document.getElementById("right").innerHTML = htm;
+	
 }
 
 var itemTree;
@@ -389,7 +399,9 @@ function ItemTreeSelect(idItemTree) {
 			  }
 		 });
 	}
+	
 	var countparams = 0;
+	
 	function addArticleform(){
 		document.getElementById("right").innerHTML = "<div id=\"params\"></div>";
 		
@@ -424,13 +436,13 @@ function ItemTreeSelect(idItemTree) {
 		 
 		 params=params+"<tr \"><td><h3>Quantity</h3></td><td> <input id= \"quantityid\"name=\"quantity\" type=\"text\" onclick=\"clickParamValue()\" onkeyup=\"keyupParamValue()\"/> </td> <td>   </td></tr>";
 		 params=params+"<tr \"><td><h3>Price</h3></td><td> <input id= \"priceid\" name=\"price\" type=\"text\" onclick=\"clickParamValue()\" onkeyup=\"keyupParamValue()\"/> </td> <td> <input  id= \"priceUnitsid\" name=\"priceunits\" type = \"text\" size=\"8\">   </td></tr>";
-		 params=params+"<tr \"><td><h3>Photo</h3></td><td> <input name=\"photo\" type=\"file\" onclick=\"clickParamValue()\" onkeyup=\"keyupParamValue()\"/> </td> <td>   </td></tr>";
+		 params=params+"<tr \"><td><h3>Photo</h3></td><td> <form  id= \"fileform\"  name = \"fileform\" method=\"POST\" action=\"uploadFile\" enctype=\"multipart/form-data\"> <input  onchange = \"imageValidation(this.form)\"  name=\"file\" type=\"file\"/></form></td> <td>   </td></tr>";
 		 params=params+"<tr \"><td colspan=\"3\"><h3>Decription</h3><textarea id= \"descriptionid\" name=\"desc\" style=\"width:99%; height:200px\"></textarea></tr>";
 		 params=params+"</table>";
 		 
 		 //params = params + "Quantity:<br><input type=\"text\" name=\"quantity\"><br>Price:<br><input type=\"text\" name=\"price\"><br>image:<br><input type=\"image\" name=\"image\"><br>Descritpion:<br><input type=\"Descritpion\" name=\"Descritpion\">";
 		 
-		 var butt="<button type=\"button\"  style=\"width: 150px; height: 50px;\" onclick = \"addArticle()\">ADD ARTICLE</button>";
+		 var butt="<button id = \"addbutton\" type=\"button\"  style=\"width: 150px; height: 50px;\" onclick = \"addArticle()\">ADD ARTICLE</button>";
 		 params = params + butt;
 		 
 		 
@@ -442,11 +454,13 @@ function ItemTreeSelect(idItemTree) {
 	
 	function addArticle(){
 
+		document.getElementById("addbutton").disabled = true;
 		var quantity = document.getElementById("quantityid").value;
 		var price = document.getElementById("priceid").value;
 		var priceUnits = document.getElementById("priceUnitsid").value;
 		var description = document.getElementById("descriptionid").value;
-		
+		var form = document.getElementById("fileform");
+		var file = 	form.elements[0].files[0];
 		
 		var paramsDataList  = [];
 		
@@ -471,6 +485,8 @@ function ItemTreeSelect(idItemTree) {
 		articleData.priceUnits = priceUnits;
 		articleData.description = description;
 		
+
+		
 		articleData.paramsDataList = paramsDataList;
 		articleData.itemTree = itemTree;
 		
@@ -479,18 +495,71 @@ function ItemTreeSelect(idItemTree) {
 			  type: 'post',
 			  dataType: 'json',
 			  contentType: 'application/json',
-			     /* mimeType: 'application/json', */
 			  data : JSON.stringify(articleData),
 			  success: function (data) {
-				 if (data){
-					 alert("the article has been added");
-					 //location.reload();
-					 //document.getElementById("right").innerHTML = "<div id=\"products\"><h1>Products</h1></div>";
-					 location.assign("${pageContext.request.contextPath}/showallarticle?");
+				 if (data.status){
+					 alert("the article id="+data.msg+"  has been added");
+					 
+					 if(form.elements[0].files.length > 0){
+						 var formdata = new FormData();
+					     file = form.elements[0].files[0];
+					     
+					   	 formdata.append("file", file);
+					   	 formdata.append("id",data.msg);
+					     
+					     
+					     $.ajax({dataType : 'json',
+					            url : "singleSave",
+					            data : formdata,
+					            type : "POST",
+					            enctype: 'multipart/form-data',
+					            processData: false, 
+					            contentType:false,
+					            success : function(result) {
+					            	alert(result.msg);	
+					            }
+					     });
+				 	} else{
+				 		alert("Image was not upload");
+				 	}
+					
+					 document.getElementById("addbutton").disabled = false;
+					 location.assign("${pageContext.request.contextPath}/adminProductslist?id="+idItemTree+"");
 				 }
 			  }
 		 });
 	}
+	
+/* 	function imageValidation(form){
+		file = form.elements[0].files[0];
+	     if (file.type != "image/png" && file.type!= "image/jpeg"){
+	    	 form.reset();
+	    	 alert("only png or jpg");
+	     }
+	} */
+	
+/* 	 function processFileUpload(form){
+	     console.log("fileupload clicked");
+	     var oMyForm = new FormData();
+	     file = form.elements[0].files[0];
+	     if (file.type == "image/png"){
+	     oMyForm.append("file", file);
+	     
+	     
+	     $.ajax({dataType : 'json',
+	            url : "singleSave",
+	            data : oMyForm,
+	            type : "POST",
+	            enctype: 'multipart/form-data',
+	            processData: false, 
+	            contentType:false,
+	            success : function(result) {
+	            	alert(result.msg);
+	            }
+	            
+	     });
+	     }else{alert("only png");}
+	 } */
 	
 	function clickParamValue(){
 		
@@ -518,15 +587,23 @@ function ItemTreeSelect(idItemTree) {
 			</div>
 			
 		</div>
-		<!-- <div id="menu">
+		
+		<div id="menu">
 			<ul>
-				<li><a href="index.html">Main</a></li>
-				<li><a href="products.html">Products</a></li>
-				<li><a href="partners.html">Partners</a></li>
-				<li><a href="about.html">About us</a></li>
-				<li><a href="contact.html">Contact</a></li>
+				<li><a href="showTree" >Category Tree</a></li>
+				
+				<c:url var="productsListUrl"	value="/adminProductslist?id=${itemTree.idItemTree}" />
+				<li>
+					<ul class="dropdown">
+						<li>	<a id="input_str" href="${productsListUrl}">${itemTree.value} </a>
+						 <myTags:adminPr_tree list="${itemTree.childrenList}" /></li>
+					</ul>
+				</li>
+				<li><a href="#">Users</a></li>
+				<li><a href="${pageContext.request.contextPath}/html/database.html">database</a></li>
+				<li><a href="#">*******</a></li>
 			</ul>
-		</div> -->
+		</div>
 		<div id="slider"></div>
 
 
@@ -545,7 +622,7 @@ function ItemTreeSelect(idItemTree) {
 						<li><input type="checkbox" id="item-0" /><label for="item-0">
 								<a onclick="ItemTreeSelect(${itemTree.idItemTree})"
 								id="input_str" href="#">${itemTree.value} </a>
-						</label> <myTags:ItemTrees list="${itemTree.childrenList}" /></li>
+						</label> <myTags:adminPr_tree list="${itemTree.childrenList}" /></li>
 					</ul>
 				</div>
 
@@ -565,7 +642,7 @@ function ItemTreeSelect(idItemTree) {
 		</div>
 		<div id="footer">
 
-			Copyright © 2048 <a href="#"></a> | </a>
+			Copyright © 2048 
 
 		</div>
 	</div>

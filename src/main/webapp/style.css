@@ -264,7 +264,7 @@ margin: 0 0 0 10px;
 	color: #1F2120;
 	float: left;
 	width: 360px;
-	padding-right: 0px;
+	padding-right: 40px;
 }
 .col_w150 {
 	/* border: 1px solid #000; */ 
@@ -278,11 +278,6 @@ margin: 0 0 0 10px;
 	width: 140px;
 	padding-right: 40px;
 }
-.col_w100forlabel {
-	float: left;
-	width: 100px;
-/* 	padding-right: 20px; */
-}
 .col_w100 {
 	border: 1px solid #000;
 	float: left;
@@ -294,7 +289,7 @@ margin: 0 0 0 10px;
 .col_w200 {
 	/* border: 1px solid #000; */
 	float: left;
-	width: 300px;
+	width: 260px;
 	
 }
 .col_w280 {
@@ -313,7 +308,7 @@ table, th, td {
 .col_w300 {
 	
 	float: left;
-	width: 500px;
+	width: 450px;
 	
 }
 #partner_box {

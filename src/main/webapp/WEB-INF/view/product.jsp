@@ -38,7 +38,7 @@
 				<li>
 					<ul class="dropdown">
 						<li>	<a onclick="ItemTreeSelect(${itemTree.idItemTree})"
-								id="input_str" href="#">${itemTree.value} </a>
+								id="input_str" href="${productsListUrl}">${itemTree.value} </a>
 						 <myTags:pr_tree list="${itemTree.childrenList}" /></li>
 					</ul>
 				</li>
@@ -53,13 +53,32 @@
 
 				<h2>Product</h2>
 						<div class="image_wrapper image_fl">
-							<img width="100" height="100" src="images/image_01.jpg"
+							<img width="400" height="300" src="${pageContext.request.contextPath}/photos/${article.idArticle}.jpg"
 								alt="TemplatemoImage01" />	
-						</div> 
-						
-						<c:out value="Name: ${article.articleName}" /> <br>
+						</div>
+
+
+				<c:forEach items="${article.articleParam}" var="articleParams">
+					<div>
+						<div class="col_w140">
+							<c:out value="${articleParams.param.paramName}" />
+						</div>
+
+						<div class="col_w100">
+							<c:out value="${articleParams.paramValue.paramValue}" />
+						</div>
+					</div>
+
+					<br>
+				</c:forEach>
+				<c:out value="Description: ${article.articleDescription}" />
+				<br>
+				<c:out value="Price: ${article.articlePrice}" />
+				<br>
+
+				<%-- <c:out value="Name: ${article.articleName}" /> <br>
 						<c:out value="Description: ${article.articleDescription}" /><br>
-						<c:out	value="Price: ${article.articlePrice}" /><br>
+						<c:out	value="Price: ${article.articlePrice}" /><br> --%>
 						
 
 					
@@ -70,27 +89,12 @@
 
 			</div>
 
-			<div class="col_w280">
-
-				<h2>Advertising</h2>
-				<blockquote>
-					<p>Additional text</p>
-
-				</blockquote>
-
-				<div class="hr_divider"></div>
-
-				<blockquote>
-					<p>Additional text</p>
-
-				</blockquote>
-
-			</div>
+			
 			<div style="clear: both"></div>
 		</div>
 		<div id="footer">
 
-			Copyright © 2048 <a href="#"></a> | </a>
+			Copyright © 2048 
 
 		</div>
 	</div>
