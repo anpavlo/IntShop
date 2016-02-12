@@ -622,7 +622,7 @@ function ItemTreeSelect(idItemTree) {
 						<li><input type="checkbox" id="item-0" /><label for="item-0">
 								<a onclick="ItemTreeSelect(${itemTree.idItemTree})"
 								id="input_str" href="#">${itemTree.value} </a>
-						</label> <myTags:adminPr_tree list="${itemTree.childrenList}" /></li>
+						</label> <myTags:ItemTrees list="${itemTree.childrenList}" /></li>
 					</ul>
 				</div>
 
